@@ -1,8 +1,8 @@
 version: '3.8'
 services:
   linux:
-    image: debian:latest  # Replace 'ubuntu:latest' with any Linux distro you prefer
-    container_name: my_linux_container
+    image: debian:latest
+    container_name: linux
     stdin_open: true      # Keep stdin open for interactive use
     tty: true             # Allocate a pseudo-TT`Y
     volumes:
