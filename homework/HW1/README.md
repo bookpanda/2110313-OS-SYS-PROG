@@ -8,6 +8,7 @@ sudo apt-get install gdb
 
 useradd -m -s /bin/bash idhibhat
 su - idhibhat
+passwd idhibhat
 
 whoami ; date ; gcc ; gdb -v
 ```
