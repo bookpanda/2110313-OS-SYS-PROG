@@ -6,7 +6,7 @@ services:
     stdin_open: true      # Keep stdin open for interactive use
     tty: true             # Allocate a pseudo-TT`Y
     volumes:
-      - ./shared_data:/shared_data  # Optional: Shared data folder
+      - ./backup_root:/root  # Optional: Shared data folder
     ports:
       - "2222:22"          # Example: Map port 2222 for SSH if needed
     command: /bin/bash      # Start the container with a bash shell
