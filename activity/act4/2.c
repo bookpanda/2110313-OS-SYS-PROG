@@ -2,50 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-int main()
-{
-    int run = 1;
-    while(run) {
-        printf("mysh >");
-        /*
-        After reading user input, do these steps
-        1. use tokenize() function to get command
-        2. fork a child process
-        3. child use execvp() to run command
-        4. parent call wait() until user enter "exit"
-        */
-       char buffer[100];
-       char *commands[100];
-       int commandCount = tokenize(buffer, " ", commands);
-
-       if(commands[0] == "exit") {
-            run = 0;
-            break;
-        }
-
-        pid_t pid;
-        pid = fork();
-        if (pid < 0) {
-            printf("Error : cannot fork\n");
-            exit(1);
-        }
-        else if (pid == 0) {
-            if(commandCount == 1) {
-                execlp(commands[0],commands[0],NULL);
-            } else {
-                char *av[commandCount];
-                for(int i = 1; i < commandCount; i++) {
-                    av[i-1] = commands[i];
-                }
-                execvp(commands[0],av);
-            }
-        }
-        else {
-            wait(NULL);
-            return(0);
-        }
-    }
-}
 
 /*
 Split input string into substrings (called tokens)
@@ -101,4 +57,65 @@ int tokenize(char *string, char *delimiters, char ***arrayOfTokens)
     }
 
     return numtokens;
+}
+
+int main()
+{
+    int run = 1;
+    while(run) {
+        printf("mysh >");
+        /*
+        After reading user input, do these steps
+        1. use tokenize() function to get command
+        2. fork a child process
+        3. child use execvp() to run command
+        4. parent call wait() until user enter "exit"
+        */
+
+        char delim[] = " \t\n";
+        char **tokens;
+        char string[256];
+        int numtokens;
+        int i;
+
+        if (fgets(string, sizeof(string), stdin) == NULL) {
+            continue;
+        }
+
+        numtokens = tokenize(string, delim, &tokens);
+        if (numtokens == 0) {
+            continue;
+        }
+        for (i = 0; i < numtokens; i++) {
+            printf("arg %d: %s\n", i, tokens[i]);
+        }
+
+        if(strcmp(tokens[0], "exit") == 0) {
+            free(tokens);
+            return 0;
+        }
+
+        pid_t pid;
+        pid = fork();
+        if (pid < 0) {
+            printf("Error : cannot fork\n");
+            exit(1);
+        }
+        else if (pid == 0) {
+            char *av[numtokens + 1];
+            for (int i = 0; i < numtokens; i++) {
+                av[i] = tokens[i];
+            }
+            av[numtokens] = NULL;
+
+            execvp(tokens[0], av);
+            perror("execvp failed");
+            exit(1);
+        }
+        else {
+            wait(NULL);
+        }
+
+        free(tokens);
+    }
 }
