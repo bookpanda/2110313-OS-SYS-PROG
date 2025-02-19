@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 	//
 	// OS -- OPEN NAMED SEMAPHORE HERE
 	//
-	sem_t *sem = sem_open("/callcenter", 0); // 0 for opening without creating
+	sem_t *sem = sem_open("callcenter", 0); // 0 for opening without creating
 	if (sem == SEM_FAILED) {
         perror("sem_open failed");
         exit(1);

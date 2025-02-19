@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
 	//
 	// sem_t sem;
 	// sem_init(&sem, 0, num_agents);
-	sem_t *sem = sem_open("/callcenter", O_CREAT, 0666, num_agents);
+	sem_t *sem = sem_open("callcenter", O_CREAT, 0666, num_agents); // 0666 for read and write permission
 
 	int semval;
 	while(1) {
