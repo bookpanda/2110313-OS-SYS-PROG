@@ -19,7 +19,11 @@ int main(int argc, char **argv)
 	//
 	// OS -- OPEN NAMED SEMAPHORE HERE
 	//
-
+	sem_t *sem = sem_open("/callcenter", 0); // 0 for opening without creating
+	if (sem == SEM_FAILED) {
+        perror("sem_open failed");
+        exit(1);
+    }
 
 	while (1)
 	{
@@ -34,6 +38,7 @@ int main(int argc, char **argv)
 		//
 		// OS -- LOCK SEMAPHORE HERE
 		//
+		sem_wait(sem);
 
 
 		time_t t = time(NULL) - t0;
@@ -46,6 +51,7 @@ int main(int argc, char **argv)
 		//
 		// OS -- UNLOCK SEMAPHORE HERE
 		//
+		sem_post(sem);
 
 
 		printf("Customer ends the call.\n");

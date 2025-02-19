@@ -13,6 +13,9 @@ int main(int argc, char **argv) {
 	//
 	// OS -- CRAETE NAMED SEMAPHORE HERE
 	//
+	// sem_t sem;
+	// sem_init(&sem, 0, num_agents);
+	sem_t *sem = sem_open("/callcenter", O_CREAT, 0666, num_agents);
 
 	int semval;
 	while(1) {
@@ -20,6 +23,7 @@ int main(int argc, char **argv) {
 		//
 		// OS -- PLACE CURRENT VALUE OF SEMAPHORE IN 'semval' HERE
 		//
+		sem_getvalue(&sem, &semval);
 
 		printf("There are %d agents available now.\n", semval);
 		sleep(3);
