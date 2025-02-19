@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 		//
 		// OS -- PLACE CURRENT VALUE OF SEMAPHORE IN 'semval' HERE
 		//
-		sem_getvalue(&sem, &semval);
+		sem_getvalue(sem, &semval);
 
 		printf("There are %d agents available now.\n", semval);
 		sleep(3);
