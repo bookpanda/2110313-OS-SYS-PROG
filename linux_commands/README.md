@@ -166,3 +166,31 @@ sort -k2n provinces # sort by the second column, numerically
 # chiangmai   053
 # phuket  076
 ```
+
+# find
+```bash
+find . # same as ls
+
+find . -name *.c
+# ./3.c
+
+find . ! -name "*.c"
+# .
+# ./numbers
+# ./sorted_numbers
+# ./provinces
+# ./typescript
+# ./a
+# ./README.md
+# ./b.txt
+# ./a.txt
+# ./1.txt
+
+find . -iname "*.C" # case insensitive
+
+find . -type f # files
+find . -type d # directories
+
+chmod 777 a
+find . -perm 777 # files with permission 777
+```
