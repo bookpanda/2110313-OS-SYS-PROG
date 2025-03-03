@@ -3,3 +3,4 @@ shared_data
 backup_root
 a.out
 .vscode
+.early.coverage
