@@ -14,7 +14,8 @@ typedef struct PageTableEntry {
 } PageTableEntry;
 
 PageTableEntry *page_table;
-PageTableEntry *outer_page_table[OUTER_PAGE_ENTRIES];
+PageTableEntry *outer_page_table[OUTER_PAGE_ENTRIES]; // each entry = address of inner page table, which is an array of PageTableEntry
+// inner page table is dynamically allocated when needed (not specified in the original code)
 
 uint8_t *physical_memory;
 uint8_t frame_allocated[FRAME_ENTRIES]; // 0 = free, 1 = allocated
@@ -22,13 +23,15 @@ uint8_t frame_allocated[FRAME_ENTRIES]; // 0 = free, 1 = allocated
 uint16_t translate_address(uint16_t logical_address) {
 
     // Assignment: get outer page number and page number from logical address
-    uint8_t outer_page_number = ?;
-    uint8_t page_number = ?;
+    uint8_t outer_page_number = logical_address >> 12;
+    uint8_t page_number = (logical_address >> 8) & 0xF;
+    uint8_t offset = logical_address & 0xFF;
 
     // Assignment: allocate inner page table
-    if (outer_page_table? == ?) {
+    if (outer_page_table[outer_page_number] == NULL) {
         // Inner page table not present, allocate an inner page table for it
-        outer_page_table? = ?
+        // calloc = allocate array of PAGE_ENTRIES PageTableEntry, initialized to 0
+        outer_page_table[outer_page_number] = calloc(PAGE_ENTRIES, sizeof(PageTableEntry));
 		printf("Allocated inner page table for outer page %d\n", outer_page_number);
     }
 
@@ -41,15 +44,15 @@ uint16_t translate_address(uint16_t logical_address) {
         } while (frame_allocated[frame_number]); // Keep trying until we find a free frame
     
         // Assignment: mark frame as allocated
-        frame_allocated? = ?;
+        frame_allocated[frame_number] = 1;
 
         // Assignment: fill in page table
-        outer_page_table? = ?;
-        outer_page_table? = ?;
+        outer_page_table[outer_page_number][page_number].frame = frame_number;
+        outer_page_table[outer_page_number][page_number].present = 1;
     }
 
     // Assignment: construct physical address from frame number and offset
-    uint16_t physical_address = ?;
+    uint16_t physical_address = (outer_page_table[outer_page_number][page_number].frame << 8) | offset;
 
     printf("Translate logical address 0x%X (outer page number 0x%X, page number 0x%X, offset 0x%X) to physical address 0x%X\n",
         logical_address, outer_page_number, page_number, logical_address & 0xFF, physical_address);
@@ -104,12 +107,15 @@ int main() {
 
     // Read and write to memory
     uint8_t value;
+    // p1=0x0, p2=0x1, offset=0x23
     write_to_memory(0x123, 0xA);
     read_from_memory(0x123, &value);
     printf("Value read from memory: 0x%02X\n", value);
+    // p1=0x1, p2=0x2, offset=0x34
     write_to_memory(0x1234, 0xB);
     read_from_memory(0x1234, &value);
     printf("Value read from memory: 0x%02X\n", value);
+    // p1=0xF, p2=0xF, offset=0x12
 	write_to_memory(0xFF12, 0xC);
     read_from_memory(0xFF12, &value);
     printf("Value read from memory: 0x%02X\n", value);
