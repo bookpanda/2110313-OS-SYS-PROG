@@ -35,8 +35,9 @@ int get_free_frame(int page_number, int timestamp) {
             if (frames[i].page_number == -1) {
                     // Assignment 1.1
                     // Update frames[i], and num_free_frames
-
-
+                    frames[i].page_number = page_number;
+                    frames[i].timestamp = timestamp;
+                    num_free_frames--;
 				
                     return i;
             }
@@ -49,19 +50,22 @@ int get_free_frame(int page_number, int timestamp) {
 		
         // Assignment 1.2
         // Find the oldest frame that is to be replaced
-
-
+        for(int i=1; i<num_frames; i++){
+            if(frames[i].page_number != -1 && frames[i].timestamp < min_timestamp){
+                min_timestamp = frames[i].timestamp;
+                oldest_frame = i;
+            }
+        }
 
         // Assignment 1.3
         // invalidate the replaced page in the page table (valid=0)
-
+        page_table[frames[oldest_frame].page_number].valid = 0;
 
 
         // Assignment 1.4
         // assign page number and timestamp to the selected frame (frames[oldest_frame])
-
-
-		
+        frames[oldest_frame].page_number = page_number;
+        frames[oldest_frame].timestamp = timestamp;		
 
         return oldest_frame;
     }
@@ -151,15 +155,18 @@ int main(int argc, char *argv[]) {
                         fprintf(stderr, "Page fault at page %d: No Free Frame!\n", page_number);
         }
         else {
-                // For LRU, update timestamp on page hits
-                if (use_lru) {
+            // For LRU, update timestamp on page hits
+            if (use_lru) {
                 // Assignment 2
                 // Update timestamp of the referenced page in the frames list
-
-
-
+                for(int i=0; i<num_frames; i++) {
+                    if(frames[i].page_number == page_number){
+                        frames[i].timestamp = page_references;
+                        break;
+                    }
                 }
-                if (verbose) printf("Page hit at page %d\n", page_number);
+            }
+            if (verbose) printf("Page hit at page %d\n", page_number);
         }
         token = strtok(NULL, " ");
     }
