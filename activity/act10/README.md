@@ -90,4 +90,19 @@ lrwx------ 1 root root 64 Mar 18 07:32 255 -> /dev/pts/6
 ## c. What is the difference between symbolic link and hard link?
 - symbolic link: a file that contains a reference to another file or directory in the form of an absolute or relative path (different inode from the original file)
 - hard link: a directory entry that associates a name with a file on a filesystem (same inode as the original file)
-- if edit
+
+## d. Is it possible to create a hard link for a directory? If not, Why is it (not) possible? Please provide your analysis.
+- No, it is not possible to create a hard link for a directory because it would create a cycle in the directory structure (e.g. directory A is a hard link to directory B and directory B is a hard link to directory A)
+
+## e. What is the block size of your filesystem? When will a new block be allocated to a file? Please explain.
+- block size: 1048576 bytes (1 MB)
+- a new block will be allocated to a file when the file size exceeds the current block size
+
+## f. In “/proc”, what is the filesystem there? What does the content suggest?  What are files in /proc/[pid]/fd? Please explain.
+- filesystem: proc (type: proc)
+- content: contains information about processes running on the system as directories and files
+- files in /proc/[pid]/fd: contains symbolic links to the files that the process has open
+  - 0: standard input
+  - 1: standard output
+  - 2: standard error
+  - 255: file descriptor
