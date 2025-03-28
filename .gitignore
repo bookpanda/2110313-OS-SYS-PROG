@@ -5,3 +5,7 @@ a.out
 *.out
 .vscode
 .early.coverage
+
+.env
+.venv
+.DS_Store

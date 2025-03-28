@@ -9,4 +9,10 @@ services:
       - ./backup_root:/root  # Optional: Shared data folder
     ports:
       - "2222:22"          # Example: Map port 2222 for SSH if needed
+    cap_add:
+      - SYS_ADMIN   # Required for FUSE
+    security_opt:
+      - apparmor:unconfined  # Disable AppArmor restrictions (if needed)
+    devices:
+      - /dev/fuse 
     command: /bin/bash      # Start the container with a bash shell
