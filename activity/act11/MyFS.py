@@ -11,6 +11,7 @@ import os
 import stat
 
 import fuse
+import requests
 from fuse import Fuse
 
 if not hasattr(fuse, "__version__"):
@@ -30,6 +31,7 @@ containers = {  # b"..." is a byte string
     b"1: 6531306921 Charoonroj Amornpativet\n"
     b"2: 6532201821 Atsawin Sungsuwan\n"
     b"3: 6532203021 Idhibhat Pankam\n",
+    "/participation": b"",
 }
 
 
@@ -54,9 +56,16 @@ class MyFS(Fuse):
         if path == "/":
             st.st_mode = stat.S_IFDIR | 0o777
             st.st_nlink = 2
+        elif path == "/participation":
+            st.st_mode = stat.S_IFREG | 0o666
+            st.st_nlink = 1
+            res = requests.get(
+                "https://mis.cp.eng.chula.ac.th/krerk/teaching/2022s2-os/status.php"
+            )
+            content = bytes(res.text, encoding="utf-8")
+            st.st_size = len(content)
         elif path in containers:
             st.st_mode = stat.S_IFREG | 0o444
-
             st.st_nlink = 1
             content = containers[path]
             st.st_size = len(content)
@@ -75,15 +84,24 @@ class MyFS(Fuse):
     def open(self, path, flags):
         if path not in containers:
             return -errno.ENOENT
+        if path == "/participation":
+            return 0
+
         accmode = os.O_RDONLY | os.O_WRONLY | os.O_RDWR
         if (flags & accmode) != os.O_RDONLY:
             return -errno.EACCES
+
+        return 0  # allow
 
     def read(self, path, size, offset):
         if path not in containers:
             return -errno.ENOENT
 
         content = containers[path]
+
+        if path == "/participation":
+            content = self.myRead()
+
         slen = len(content)
         if offset < slen:
             if offset + size > slen:
@@ -92,6 +110,37 @@ class MyFS(Fuse):
         else:
             buf = ""
         return buf
+
+    def write(self, path, buf, offset):
+        if path != "/participation":
+            return -errno.EACCES
+
+        current_content = containers[path]
+        new_content = current_content + buf
+        containers[path] = new_content
+
+        return self.myWrite(buf.decode())
+
+    def myRead(self):
+        try:
+            res = requests.get(
+                "https://mis.cp.eng.chula.ac.th/krerk/teaching/2022s2-os/status.php"
+            )
+            res.raise_for_status()
+            content = bytes(res.text, encoding="utf-8")
+            return content
+        except requests.exceptions.RequestException as e:
+            return f"Error fetching content: {e}".encode()
+
+    def myWrite(self, buf):
+        raw = buf.split(":")
+        checkInUrl = (
+            "https://mis.cp.eng.chula.ac.th/krerk/teaching/2022s2-os/checkIn.php"
+        )
+        params = {"studentid": raw[0], "name": raw[1], "email": raw[2]}
+        requests.post(checkInUrl, data=params)
+
+        return len(buf)
 
 
 def main():
