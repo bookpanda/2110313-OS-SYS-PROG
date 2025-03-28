@@ -25,4 +25,5 @@ nano MyFS.py
 
 chmod +x MyFS.py
 ./MyFS.py -o uid=0 -o gid=0 mnt
+echo "1:2:3" >> ./mnt/participation
 ```

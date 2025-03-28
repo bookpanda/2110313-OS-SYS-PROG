@@ -19,8 +19,8 @@ def myWrite(buf):
 
 
 def main():
-    print(myRead())
-    # print(myWrite("a:b:c"))
+    # print(myRead())
+    print(myWrite("a:b:c"))
 
 
 if __name__ == "__main__":

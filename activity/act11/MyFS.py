@@ -116,7 +116,12 @@ class MyFS(Fuse):
         new_content = current_content + buf
         containers[path] = new_content
 
-        self.myWrite(buf)
+        write_length = self.myWrite(buf)
+
+        if write_length == len(buf):
+            return len(buf)
+        else:
+            return -errno.EIO
 
     def myRead(self):
         try:
