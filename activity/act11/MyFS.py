@@ -59,10 +59,7 @@ class MyFS(Fuse):
         elif path == "/participation":
             st.st_mode = stat.S_IFREG | 0o666
             st.st_nlink = 1
-            res = requests.get(
-                "https://mis.cp.eng.chula.ac.th/krerk/teaching/2022s2-os/status.php"
-            )
-            content = bytes(res.text, encoding="utf-8")
+            content = self.myRead()
             st.st_size = len(content)
         elif path in containers:
             st.st_mode = stat.S_IFREG | 0o444
@@ -119,7 +116,7 @@ class MyFS(Fuse):
         new_content = current_content + buf
         containers[path] = new_content
 
-        return self.myWrite(buf.decode())
+        self.myWrite(buf)
 
     def myRead(self):
         try:
@@ -133,12 +130,12 @@ class MyFS(Fuse):
             return f"Error fetching content: {e}".encode()
 
     def myWrite(self, buf):
-        raw = buf.split(":")
-        checkInUrl = (
-            "https://mis.cp.eng.chula.ac.th/krerk/teaching/2022s2-os/checkIn.php"
-        )
+        raw = buf.split(b":")
         params = {"studentid": raw[0], "name": raw[1], "email": raw[2]}
-        requests.post(checkInUrl, data=params)
+        requests.post(
+            "https://mis.cp.eng.chula.ac.th/krerk/teaching/2022s2-os/checkIn.php",
+            data=params,
+        )
 
         return len(buf)
 

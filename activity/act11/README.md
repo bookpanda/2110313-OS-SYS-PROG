@@ -14,7 +14,7 @@ id
 # unmount
 fusermount -u mnt
 
-echo "41xxxx:Student Good:Student.G@student.chula.ac.th" >> participation
+echo "1:2:3" >> participation
 
 
 fusermount -u mnt
