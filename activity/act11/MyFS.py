@@ -20,12 +20,16 @@ if not hasattr(fuse, "__version__"):
 
 fuse.fuse_python_api = (0, 2)
 
-containers = {
+containers = {  # b"..." is a byte string
     "/subject": b"2021S2 - Operating Systems\nCP ENG CU\n",
     "/instructors": b"0:CP ENG CU OS 2018S1 - Instructors\n"
     b"1:      Krerk Piromsopa, Ph. D.\n"
     b"2:      Veera Muangsin, Ph.D.\n"
     b"3:      Thongchai Rojkangsadan\n",
+    "/students": b"0:CP ENG CU OS 2018S1 - Students, Group Name: WinJaroonPat\n"
+    b"1: 6531306921 Charoonroj Amornpativet\n"
+    b"2: 6532201821 Atsawin Sungsuwan\n"
+    b"3: 6532203021 Idhibhat Pankam\n",
 }
 
 
