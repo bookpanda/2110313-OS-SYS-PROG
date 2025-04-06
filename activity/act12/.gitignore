@@ -1,0 +1,10 @@
+.dummy*
+.Module.*
+.modules.*
+Module.*
+modules.*
+*.mod
+*.mod.c
+*.mod.o
+*.ko
+*.o
