@@ -4,6 +4,7 @@
 
 # Setup
 ```bash
+# t3.small
 ssh -i "cloud-computing.pem" ubuntu@ec2-13-229-205-41.ap-southeast-1.compute.amazonaws.com
 
 # to open VSCode in EC2, add this to /.ssh/config
