@@ -4,7 +4,7 @@
 
 # Setup
 ```bash
-# t3.medium
+# t3.mediumz, 30GB EBS
 ssh -i "cloud-computing.pem" ubuntu@ec2-54-255-220-205.ap-southeast-1.compute.amazonaws.com
 
 # to open VSCode in EC2, add this to /.ssh/config
