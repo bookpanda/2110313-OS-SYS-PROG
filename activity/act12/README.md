@@ -15,7 +15,7 @@ Host ec2-18-138-229-207.ap-southeast-1.compute.amazonaws.com
 
 sudo apt update
 sudo apt install build-essential linux-headers-$(uname -r)
-sudo apt install flex bison libelf-dev
+sudo apt install flex # bison libelf-dev
 
 sudo apt install gcc-12 g++-12
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 60
@@ -72,4 +72,10 @@ cat /dev/osinfo1
 sudo rmmod osinfo # removes insmod 
 sudo rm /dev/osinfo # removes mknod
 sudo rm /dev/osinfo1
+```
+
+## Checkpoint 4
+```bash
+sudo make all
+
 ```
