@@ -69,4 +69,8 @@ ls -al /dev/osinfo*
 
 cat /dev/osinfo
 cat /dev/osinfo1
+
+sudo rmmod osinfo # removes insmod 
+sudo rm /dev/osinfo # removes mknod
+sudo rm /dev/osinfo1
 ```
