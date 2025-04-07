@@ -5,17 +5,17 @@
 # Setup
 ```bash
 # ubuntu 22.04 (debian not working), t3.medium, 30GB EBS
-ssh -i "cloud-computing.pem" ubuntu@ec2-18-138-229-207.ap-southeast-1.compute.amazonaws.com
+ssh -i "cloud-computing.pem" ubuntu@ec2-18-141-216-49.ap-southeast-1.compute.amazonaws.com
 
 # to open VSCode in EC2, add this to /.ssh/config
-Host ec2-18-138-229-207.ap-southeast-1.compute.amazonaws.com
-  HostName ec2-18-138-229-207.ap-southeast-1.compute.amazonaws.com
+Host ec2-18-141-216-49.ap-southeast-1.compute.amazonaws.com
+  HostName ec2-18-141-216-49.ap-southeast-1.compute.amazonaws.com
   IdentityFile ~/.ssh/cloud-computing.pem
   User ubuntu
 
 sudo apt update
 sudo apt install build-essential linux-headers-$(uname -r)
-sudo apt install flex # bison libelf-dev
+sudo apt install flex bison # libelf-dev
 
 sudo apt install gcc-12 g++-12
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 60
