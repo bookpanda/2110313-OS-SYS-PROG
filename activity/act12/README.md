@@ -74,3 +74,9 @@ sudo rmmod osinfo # removes insmod
 sudo rm /dev/osinfo # removes mknod
 sudo rm /dev/osinfo1
 ```
+
+## Checkpoint 4
+```bash
+sudo make all
+
+```
