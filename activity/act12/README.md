@@ -79,3 +79,16 @@ sudo rm /dev/osinfo1
 sudo make all
 
 ```
+
+## Caution
+```bash
+ubuntu@ip-172-31-0-78:~/2110313-OS-SYS-PROG/activity/act12/osinfo$ sudo make all
+make -C /lib/modules/6.8.0-1024-aws/build M= modules
+make[1]: Entering directory '/usr/src/linux-headers-6.8.0-1024-aws'
+make[3]: *** No rule to make target 'arch/x86/entry/syscalls/syscall_32.tbl', needed by 'arch/x86/include/generated/uapi/asm/unistd_32.h'.  Stop.
+make[2]: *** [arch/x86/Makefile:249: archheaders] Error 2
+make[1]: *** [Makefile:240: __sub-make] Error 2
+make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-1024-aws'
+make: *** [Makefile:3: all] Error 2
+```
+- try `make all` on `dummy` again, then `make all` on `osinfo` (somehow it fixes)
