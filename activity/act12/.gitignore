@@ -1,4 +1,4 @@
-.dummy*
+*.cmd
 .Module.*
 .modules.*
 Module.*
