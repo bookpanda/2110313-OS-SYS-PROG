@@ -13,6 +13,12 @@ static int dev_major;
 static int dev_open =0;
 static char *f_ptr;
 static const char f_data0[] = "0:CP ENG CU OS 2022S2 - Instructors\n1:\tVeera Muangsin, Ph.D.\n2:\tKrerk Piromsopa, Ph.D.\n3:\tThongchai Rojkangsadan\n";
+static const char f_data1[] =
+        "0:CP ENG CU OS 2024S2 – Students, Group Name: WinJaroonPat\n"
+        "1:\t6531306921 Charoonroj Amornpativet\n"
+        "2:\t6532201821 Atsawin Sungsuwan\n"
+        "3:\t6532203021 Idhibhat Pankam\n";
+
 // prototypes for device functions
 static int device_open(struct inode *, struct file *);
 static int device_release(struct inode *inode, struct file *file);
@@ -52,6 +58,13 @@ static int device_open(struct inode *inode, struct file *file)
     dev_open++;
     printk(KERN_INFO "dev minor %d\n", MINOR(inode->i_rdev));
     f_ptr=(char * )f_data0;
+
+    if (MINOR(inode->i_rdev) == 1) {
+        f_ptr = (char *)f_data1;  
+    } else {
+        f_ptr = (char *)f_data0;
+    }
+
     // lock module
     try_module_get(THIS_MODULE);
     return 0;

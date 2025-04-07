@@ -57,3 +57,16 @@ cat /dev/osinfo
 sudo rmmod osinfo
 sudo rm /dev/osinfo
 ```
+
+## Checkpoint 3
+```bash
+sudo make all
+sudo insmod osinfo.ko
+sudo dmesg | tail # get major number
+sudo mknod /dev/osinfo c <major_number> 0
+sudo mknod /dev/osinfo1 c <major_number> 1
+ls -al /dev/osinfo*
+
+cat /dev/osinfo
+cat /dev/osinfo1
+```
