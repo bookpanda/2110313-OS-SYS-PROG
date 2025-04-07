@@ -4,25 +4,24 @@
 
 # Setup
 ```bash
-# t3.mediumz, 30GB EBS
-ssh -i "cloud-computing.pem" ubuntu@ec2-54-255-220-205.ap-southeast-1.compute.amazonaws.com
+# ubuntu 22.04 (debian not working), t3.medium, 30GB EBS
+ssh -i "cloud-computing.pem" ubuntu@ec2-18-138-229-207.ap-southeast-1.compute.amazonaws.com
 
 # to open VSCode in EC2, add this to /.ssh/config
-Host ec2-54-255-220-205.ap-southeast-1.compute.amazonaws.com
-  HostName ec2-54-255-220-205.ap-southeast-1.compute.amazonaws.com
+Host ec2-18-138-229-207.ap-southeast-1.compute.amazonaws.com
+  HostName ec2-18-138-229-207.ap-southeast-1.compute.amazonaws.com
   IdentityFile ~/.ssh/cloud-computing.pem
   User ubuntu
 
 sudo apt update
 sudo apt install build-essential linux-headers-$(uname -r)
-sudo apt install flex bison libelf-dev build-essential
 
-sudo apt install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison
-cd /usr/src
-sudo git clone https://github.com/torvalds/linux.git
-cd linux
-sudo make oldconfig && sudo make prepare
+sudo apt install gcc-12 g++-12
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 60
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 
+gcc --version # 12.3.0
 
+# sudo apt install flex bison libelf-dev build-essential
 
 git clone https://github.com/bookpanda/2110313-OS-SYS-PROG.git
 # download C++, Makefile VSCode extensions
