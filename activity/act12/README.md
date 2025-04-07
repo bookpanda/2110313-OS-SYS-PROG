@@ -49,4 +49,11 @@ sudo insmod dummy.ko
 ```bash
 sudo make all
 sudo insmod osinfo.ko
+sudo dmesg | tail # get major number
+
+# create interface for user
+sudo mknod /dev/osinfo c <major_number> 0
+cat /dev/osinfo
+sudo rmmod osinfo
+sudo rm /dev/osinfo
 ```
