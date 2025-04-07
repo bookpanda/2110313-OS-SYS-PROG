@@ -22,7 +22,6 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 60
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 
 gcc --version # 12.3.0
 
-
 git clone https://github.com/bookpanda/2110313-OS-SYS-PROG.git
 # download C++, Makefile VSCode extensions
 ```
